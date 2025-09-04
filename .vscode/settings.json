@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "listaduplamenteenc.h": "c",
+        "registrodehumor.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
+    }
+}
