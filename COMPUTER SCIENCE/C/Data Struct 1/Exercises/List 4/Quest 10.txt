@@ -1,0 +1,24 @@
+Faça o que se pede para a árvore do exercício anterior:
+Dê o grau de cada nó.
+
+Answer = 1: 0 / 2: 2 / 3: 0 / 4: 2 / 5: 0 / 6: 2 / 7: 0 / 8: 2 / 9: 1 / 10: 0
+
+
+Qual o grau da árvore? Explique.
+
+Answer = O grau da árvore é 2, pq o grau da árvore é definido pelo maior grau dentre todos os nós contidos nela
+
+
+Qual a altura da árvore?
+
+Answer = 3
+
+
+Qual o nível do nó 6?
+
+Answer = nivel 2
+
+
+Dê o fator de balanceamento de cada nó da árvore.
+
+Answer = 1: 0 / 2: 0 / 3: 0 / 4: 1 / 5: 0 / 6: 0 / 7: 0 / 8: 0 / 9: 1 / 10: 0
