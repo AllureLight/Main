@@ -3,6 +3,7 @@
         "listaduplamenteenc.h": "c",
         "registrodehumor.h": "c",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "time.h": "c"
     }
 }
