@@ -8,8 +8,8 @@
 int function(){
     int n, m, j, cont = 0;
     
-    char T[10] = "Ola_Mundo";
-    char P[] = "e";
+    char T[] = "Ola_Mundo_Estou_Esperando_E_Sendo_Pequen_Diante_De_Tudo_Pequeno_Pois_Foi_Dito";
+    char P[] = "Pequeno";
     
     n = strlen(T);
     m = strlen(P);

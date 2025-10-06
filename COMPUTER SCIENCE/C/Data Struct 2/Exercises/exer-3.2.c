@@ -27,7 +27,10 @@ int busca(char *P, char *T){
 
     pre_processamento(P, aux);
 
+    int cont = 0;
+
     for(int i = 0; i <= (n-1); i++){
+        cont++;
         while(k > -1 && P[k+1] != T[i]){
             k = aux[k];
         }
@@ -35,9 +38,11 @@ int busca(char *P, char *T){
             k++;
         }
         if(k == m -1){
+            printf("Ele fez %d combinacoes\n\n", cont);
             return (i-k);
         }
     }
+    printf("Ele fez %d combinacoes\n\n", cont);
     return -1;
 }
 
@@ -45,8 +50,8 @@ int main(){
     clock_t start, end;
     start = clock();
 
-    char P[] = "Ola";
-    char T[10] = "Ola_Mundo";
+    char P[] = "Pequeno";
+    char T[] = "Ola_Mundo_Estou_Esperando_E_Sendo_Pequen_Diante_De_Tudo_Pequeno_Pois_Foi_Dito";
 
     int a = busca(P, T);
 
