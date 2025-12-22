@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-void imprimir(int Vet[10]){
-    for(int i = 0; i < 10; i++){
+#define TAM 50000
+
+void imprimir(int Vet[TAM]){
+    for(int i = 0; i < TAM; i++){
         printf("%d ", Vet[i]);
     }
     printf("\n");
@@ -56,11 +58,11 @@ int main(){
     time_t start, end;
     start = clock();
 
-    int v[10], n = 10;
+    int v[TAM], n = TAM;
     int comparacoes = 0, trocas = 0;
 
     srand( (unsigned)time(NULL) );
-    for(int a = 0; a < 10 ; a++){
+    for(int a = 0; a < TAM ; a++){
         v[a] = rand()%100;
     }
 

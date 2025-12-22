@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-void imprimir(int Vet[10]){
-    for(int i = 0; i < 10; i++){
+#define TAM 50000
+
+void imprimir(int Vet[TAM]){
+    for(int i = 0; i < TAM; i++){
         printf("%d ", Vet[i]);
     }
     printf("\n");
@@ -13,32 +15,38 @@ int main(){
     time_t start, end;
     start = clock();
 
-    int v[10], n = 10, menor, aux;
+    int h = 1, n = TAM, j;
+    int v[TAM], aux;
     int comparacoes = 0, trocas = 0;
 
     srand( (unsigned)time(NULL) );
-    for(int a = 0; a < 10 ; a++){
+    for(int a = 0; a < TAM ; a++){
         v[a] = rand()%100;
     }
 
     printf("Valores fora da ordem:\n");
     imprimir(v);
 
-    for(int i = 0; i < n -1 ;i++){
-        menor = i;
-        for(int j = i + 1; j < n; j++){
-            comparacoes++;
-            if(v[j] < v[menor])
-                menor = j;
-        }
-        if(i != menor){
+    while(h < n / 3){
+        h = 3 * h + 1;
+    }
+
+    while(h >= 1){
+        for(int i = h; i < n; i++){
             aux = v[i];
-            v[i] = v[menor];
-            v[menor] = aux;
+            j = i - h;
+            comparacoes++;
+            while(j >= 0 && aux < v[j]){
+                v[j+h] = v[j];
+                trocas++;
+                j = j - h;
+            }
+            v[j+h] = aux;
             trocas++;
         }
+        h /= 3;
     }
-    
+
     printf("\nValores dentro da ordem:\n");
     imprimir(v);
 

@@ -2,21 +2,28 @@
 #include <stdlib.h>
 #include <time.h>
 
-void imprimir(int Vet[30]){
-    for(int i = 0; i < 30; i++){
+//Bolha com Criterio de Parada
+
+#define TAM 5000
+
+void imprimir(int Vet[TAM]){
+    for(int i = 0; i < TAM; i++){
         printf("%d ", Vet[i]);
     }
     printf("\n");
 }
 
 int main() {
-    int V[30], aux, j;
-    int x = 1, n = 30;
+    time_t start, end;
+    start = clock();
+
+    int V[TAM], aux, j;
+    int x = 1, n = TAM;
     int indice = n-1;
     
     srand( (unsigned)time(NULL) );
 
-    for(int i = 0; i < 30 ; i++){
+    for(int i = 0; i < TAM ; i++){
         V[i] = rand()%100;
     }
     
@@ -41,6 +48,9 @@ int main() {
     
     printf("\nValores dentro da ordem:\n");
     imprimir(V);
+
+    end = clock();
+    printf("\n\n  %5.2f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
 
     return 0;
 }

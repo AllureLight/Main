@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define TAM 50000
+
 int comparacoes = 0, trocas = 0;
 
-void imprimir(int Vet[10]){
-    for(int i = 0; i < 10; i++){
+void imprimir(int Vet[TAM]){
+    for(int i = 0; i < TAM; i++){
         printf("%d ", Vet[i]);
     }
     printf("\n");
@@ -16,7 +18,7 @@ void intercalar(int v[], int ini, int fim, int meio){
     int j = meio + 1;
     int k = 0;
 
-    int aux[10];
+    int aux[TAM];
 
     while(i <= meio || j <= fim){
         comparacoes++;
@@ -52,17 +54,17 @@ int main(){
     time_t start, end;
     start = clock();
 
-    int v[10];
+    int v[TAM];
 
     srand( (unsigned)time(NULL) );
-    for(int a = 0; a < 10 ; a++){
+    for(int a = 0; a < TAM ; a++){
         v[a] = rand()%100;
     }
 
     printf("Valores fora da ordem:\n");
     imprimir(v);
 
-    mergeSort(v, 0, 9);
+    mergeSort(v, 0, TAM-1);
 
     printf("\nValores dentro da ordem:\n");
     imprimir(v);

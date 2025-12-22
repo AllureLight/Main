@@ -91,16 +91,16 @@ Patricia* inserir(Patricia *p, const char *chave) {
     return p;
 }
 
-void imprimir(Patricia *p, Patricia *atual) {
-    if (p == NULL) return;
+void imprimir(Patricia *atual) {
+    if (atual == NULL) return;
 
-    if (atual->bit <= p->bit) {
-        printf("%s\n", atual->chave);
-        return;
-    }
+    if (atual->esq != NULL && atual->esq->bit > atual->bit)
+        imprimir(atual->esq);
 
-    imprimir(p, atual->esq);
-    imprimir(p, atual->dir);
+    printf("%s\n", atual->chave);
+
+    if (atual->dir != NULL && atual->dir->bit > atual->bit)
+        imprimir(atual->dir);
 }
 
 int main() {
@@ -115,7 +115,7 @@ int main() {
     raiz = inserir(raiz, "111");
 
     printf("Chaves na arvore:\n");
-    imprimir(raiz, raiz->esq);
+    imprimir(raiz);
 
     end = clock();
     printf("\nTempo: %.4f seg.\n", ((double)(end - start)) / CLOCKS_PER_SEC);
