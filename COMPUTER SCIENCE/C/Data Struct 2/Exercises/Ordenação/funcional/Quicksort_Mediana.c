@@ -2,34 +2,21 @@
 #include <stdlib.h>
 #include <time.h>
 
-//Muda o pivo a partir desse valor
-//1 - meio
-//2 - final (nao ta funcionando)
-//3 - inicio
-#define PIVO 3
+#define MAX 50000
 
-int v[10];
+int v[MAX];
 int comparacoes = 0, trocas = 0;
 
-void imprimir(int Vet[10]){
-    for(int i = 0; i < 10; i++){
-        printf("%d ", Vet[i]);
+void imprimir(int v[]){
+    for(int i = 0; i < MAX; i++){
+        printf("%d ", v[i]);
     }
     printf("\n");
 }
 
-int definirPivo(int i, int j){
-    if(PIVO == 1)
-        return (i + j) / 2;
-    else if(PIVO == 2)
-        return j;
-    else
-        return i;
-}
-
 int Particao(int esq, int dir){
     int i = esq, j = dir;
-    int aux, pivo = v[definirPivo(i, j)];
+    int aux, pivo = v[(i + j + ((i + j) / 2))/ 3];
 
     while(i <= j){
         while(v[i] < pivo && i < dir){
@@ -66,14 +53,14 @@ int main(){
     start = clock();
 
     srand( (unsigned)time(NULL) );
-    for(int a = 0; a < 10 ; a++){
+    for(int a = 0; a < MAX ; a++){
         v[a] = rand()%100;
     }
 
     printf("Valores fora da ordem:\n");
     imprimir(v);
 
-    QuickSort(0, 9);
+    QuickSort(0, MAX - 1);
 
     printf("\nValores dentro da ordem:\n");
     imprimir(v);

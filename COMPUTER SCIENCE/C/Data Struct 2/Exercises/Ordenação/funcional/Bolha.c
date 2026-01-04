@@ -2,7 +2,7 @@
 #include<time.h>
 #include <stdlib.h>
 
-#define TAM 100
+#define TAM 100000
 #define Linha 20
 
 int main() {

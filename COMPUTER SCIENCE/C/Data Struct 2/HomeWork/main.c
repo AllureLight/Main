@@ -287,6 +287,38 @@ void mergeSort(int *vetor, int ini, int fim){
 }
 
 //Radixsort void radixsort(int *vetor, int n)
+void countSort(int *vetor, int n, int exp){
+    int *output = malloc(n * sizeof(int));
+    int i, count[10] = { 0 };
+
+    for(i = 0; i < n; i++){
+        count[(vetor[i] / exp) % 10]++;
+    }
+
+    for(i = 1; i < 10; i++){
+        count[i] += count[i - 1];
+    }
+
+    for(i = n - 1; i >= 0; i--){
+        output[count[(vetor[i] / exp) % 10] - 1] = vetor[i];
+        count[(vetor[i] / exp) % 10]--;
+    }
+
+    for(i = 0; i < n; i++){
+        vetor[i] = output[i];
+    }
+    free(output);
+}
+void radixSort(int *vetor, int n){
+    int max = vetor[0];
+    for(int i = 1; i < n; i++){
+        if(vetor[i] > max) max = vetor[i];
+    }
+
+    for(int i = 1; max / i > 0 ; i *= 10) {
+        countSort(vetor, n, i);
+    }
+}
 
 //Bucketsort void bucketsort(int *vetor, int n)
 
@@ -295,11 +327,17 @@ void todosAlgoritmos(int *vetor, int n){
     bolha(vetor, n);
     bolhaCP(vetor, n);
     insercaoDireta(vetor, n);
-    //insercaoBinaria(vetor, n);
-    //insercaoTernaria(vetor, n);
-    //shellsort(vetor, n);
-    //selecaoDireta(vetor, n);
-    //heapSort(vetor, n);
+    insercaoBinaria(vetor, n);
+    insercaoTernaria(vetor, n);
+    shellsort(vetor, n);
+    selecaoDireta(vetor, n);
+    heapSort(vetor, n);
+    //quick1
+    //quick2
+    //quick3
+    //merge
+    radixSort(vetor, n);
+    //bucket
 }
 
 //roda um algoritmo escolhido
@@ -319,6 +357,12 @@ void umAlgoritmo(int *vetor, int n){
                     break;
                 case 1:
                     bolhaCP(vetor, n);
+                    break;
+                case 2:
+                    insercaoDireta(vetor, n);
+                    break;
+                case 12:
+                    radixSort(vetor, n);
                     break;
             }
 }
