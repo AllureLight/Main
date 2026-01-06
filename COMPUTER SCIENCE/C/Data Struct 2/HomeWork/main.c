@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define tam_bucket 1000
+#define num_bucket 100
+
+int comparacoes = 0, trocas = 0;
+
+typedef struct bucket{
+    int *balde;
+    int top;
+}Bucket;
+
 //TESTE, TIRAR DPS
 void imprimir(int *vetor, int n){
     for(int i = 0; i < n; i++){
@@ -246,11 +256,104 @@ void heapSort(int *vetor, int n){
     }
 }
 
-//Quicksort Centro void quicksortCentro(int *vetor, int n)
+//Quicksort Centro
+int particaoCentro(int *vetor, int esq, int dir){
+    int i = esq, j = dir;
+    int aux, pivo = vetor[(i+j) / 2];
 
-//Quicksort Fim void quicksortFim(int *vetor, int n)
+    while(i <= j){
+        while(vetor[i] < pivo && i < dir){
+            i++;
+            comparacoes++;
+        }
+        while(vetor[j] > pivo && j > esq){
+            j--;
+            comparacoes++;
+        }
+        if(i <= j){
+            aux = vetor[i];
+            vetor[i] = vetor[j];
+            vetor[j] = aux;
+            trocas++;
 
-////Quicksort Mediana void quicksortMediana(int *vetor, int n)
+            i++;
+            j--;
+        }
+    }
+    return i;
+}
+void quickSortCentro(int *vetor, int esq, int dir){
+    if(esq < dir){
+        int i = particaoCentro(vetor, esq, dir);
+        quickSortCentro(vetor, esq, i - 1);
+        quickSortCentro(vetor, i, dir);
+    }
+}
+
+//Quicksort Fim
+int particaoFim(int *vetor, int esq, int dir){
+    int i = esq - 1;
+    int aux, pivo = vetor[dir];
+
+    for(int j = esq; j < dir; j++){
+        comparacoes++;
+        if(vetor[j] <= pivo){
+            i++;
+            aux = vetor[i];
+            vetor[i] = vetor[j];
+            vetor[j] = aux;
+            trocas++;
+        }
+    }
+
+    aux = vetor[i + 1];
+    vetor[i+1] = vetor[dir];
+    vetor[dir] = aux;
+    trocas++;
+
+    return i + 1;
+}
+void quickSortFim(int *vetor, int esq, int dir){
+    if(esq < dir){
+        int i = particaoFim(vetor, esq, dir);
+        quickSortFim(vetor, esq, i - 1);
+        quickSortFim(vetor, i + 1, dir);
+    }
+}
+
+////Quicksort Mediana
+int particaoMediana(int *vetor, int esq, int dir){
+    int i = esq, j = dir;
+    int aux, pivo = vetor[(i + j + ((i + j) / 2))/ 3];
+
+    while(i <= j){
+        while(vetor[i] < pivo && i < dir){
+            i++;
+            comparacoes++;
+        }
+        while(vetor[j] > pivo && j > esq){
+            j--;
+            comparacoes++;
+        }
+        if(i <= j){
+            aux = vetor[i];
+            vetor[i] = vetor[j];
+            vetor[j] = aux;
+            trocas++;
+
+            i++;
+            j--;
+        }
+    }
+    return i;
+}
+void quickSortMediana(int *vetor, int esq, int dir){
+    if(esq < dir){
+        int i = particaoMediana(vetor, esq, dir);
+        quickSortMediana(vetor, esq, i - 1);
+        quickSortMediana(vetor, i, dir);
+    }
+}
 
 //Mergesort OLHAR DPS ******
 void intercalar(int *vetor, int ini, int fim, int meio){
@@ -286,7 +389,7 @@ void mergeSort(int *vetor, int ini, int fim){
     }
 }
 
-//Radixsort void radixsort(int *vetor, int n)
+//Radixsort
 void countSort(int *vetor, int n, int exp){
     int *output = malloc(n * sizeof(int));
     int i, count[10] = { 0 };
@@ -321,80 +424,154 @@ void radixSort(int *vetor, int n){
 }
 
 //Bucketsort void bucketsort(int *vetor, int n)
+void insertion(int v[], int tam){
+    int i, j, chave;
 
-//roda todos os algoritmos
-void todosAlgoritmos(int *vetor, int n){
-    bolha(vetor, n);
-    bolhaCP(vetor, n);
-    insercaoDireta(vetor, n);
-    insercaoBinaria(vetor, n);
-    insercaoTernaria(vetor, n);
-    shellsort(vetor, n);
-    selecaoDireta(vetor, n);
-    heapSort(vetor, n);
-    //quick1
-    //quick2
-    //quick3
-    //merge
-    radixSort(vetor, n);
-    //bucket
-}
+    for (i = 1; i < tam; i++) {
+        chave = v[i];
+        j = i - 1;
 
-//roda um algoritmo escolhido
-void umAlgoritmo(int *vetor, int n){
-    int opc;
-            printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort");
-            do{
-                printf("\nEscolha qual algoritmo de ordenacao vai ser utilizado: ");
-                scanf("%d", &opc);
-                if(opc < 0 && opc > 14)
-                    printf("\nDigite uma opcao valida!\n");
-            }while(opc < 0 && opc > 14);
-
-            switch(opc){
-                case 0: 
-                    bolha(vetor, n);
-                    break;
-                case 1:
-                    bolhaCP(vetor, n);
-                    break;
-                case 2:
-                    insercaoDireta(vetor, n);
-                    break;
-                case 12:
-                    radixSort(vetor, n);
-                    break;
+        while (j >= 0) {
+            comparacoes++;
+            if (v[j] > chave) {
+                v[j + 1] = v[j];
+                trocas++;
+                j--;
+            } else {
+                break;
             }
-}
-
-//roda um numero de algoritmos escolhidos
-void numAlgoritmo(int *vetor, int n){
-    int numAlg;
-    do{
-        printf("\nDigite quantos algoritmos deseja rodar (2 - 13): ");
-        scanf("%d", &numAlg);
-        if(numAlg < 2 || numAlg > 13)
-            printf("\nDigite uma opcao valida!\n");
-    }while(numAlg < 2 || numAlg > 13);
-
-    printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort");
-    if(numAlg == 1){
-            printf("\nEscolha qual algoritmo de ordenacao vai ser utilizado: ");
-    }else{
-        int *aux = malloc(numAlg * sizeof(int));
-        if (aux == NULL) return;
-
-        printf("\nEscolha quais algoritmos de ordenacao vao ser utilizados\n");
-        for(int i = 0; i < numAlg; i++){
-            printf("%d algoritmo escolhido: ", i + 1);
-            scanf("%d", &aux[i]);
         }
-        free(aux);
+
+        v[j + 1] = chave;
+        trocas++;
+    }
+}
+void bucketSort(int v[], int tam){
+    Bucket bucket[num_bucket];
+    int j, i, k;
+
+    int min = v[0], max = v[0];
+
+    for(i = 1; i < tam; i++){
+        if(v[i] < min) min = v[i];
+        if(v[i] > max) max = v[i]; 
+    }
+
+    if( max == min) return;
+
+    for (i = 0; i < num_bucket; i++) {
+        bucket[i].top = 0;
+        bucket[i].balde = malloc(sizeof(int) * tam);
+    }
+
+    for (i = 0; i < tam; i++) {
+        int indice = (v[i] - min) * num_bucket / (max - min + 1);
+        bucket[indice].balde[bucket[indice].top++] = v[i];
+        trocas++;
+    }
+
+    for(i = 0; i < num_bucket; i++){
+        if(bucket[i].top > 1)
+            insertion(bucket[i].balde, bucket[i].top);
+    }
+
+    k = 0;
+    for(i = 0; i < num_bucket; i++){
+        for(j = 0; j < bucket[i].top; j++){
+            v[k++] = bucket[i].balde[j];
+        }
+        free(bucket[i].balde);
     }
 }
 
+//roda o algoritmo escolhido
+void umAlgoritmo(int *vetor, int n){
+    time_t start, end;
+    int opc;
+    printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort");
+    do{
+        printf("\nEscolha qual algoritmo de ordenacao vai ser utilizado: ");
+        scanf("%d", &opc);
+        if(opc < 0 && opc > 13)
+            printf("\nDigite uma opcao valida!\n");
+    }while(opc < 0 && opc > 13);
+
+    switch(opc){
+        case 0:
+            start = clock();
+            bolha(vetor, n);
+            end = clock();
+            break;
+        case 1:
+            start = clock();
+            bolhaCP(vetor, n);
+            end = clock();
+            break;
+        case 2:
+            start = clock();
+            insercaoDireta(vetor, n);
+            end = clock();
+            break;
+        case 3:
+            start = clock();
+            insercaoBinaria(vetor, n);
+            end = clock();
+            break;
+        case 4:
+            start = clock();
+            insercaoTernaria(vetor, n);
+            end = clock();
+            break;
+        case 5:
+            start = clock();
+            shellsort(vetor, n);
+            end = clock();
+            break;
+        case 6:
+            start = clock();
+            selecaoDireta(vetor, n);
+            end = clock();
+            break;
+        case 7:
+            start = clock();
+            heapSort(vetor, n);
+            end = clock();
+            break;
+        case 8:
+            start = clock();
+            quickSortCentro(vetor, 0, n-1);
+            end = clock();
+            break;
+        case 9:
+            start = clock();
+            quickSortFim(vetor, 0, n-1);
+            end = clock();
+            break;
+        case 10:
+            start = clock();
+            quickSortMediana(vetor, 0, n-1);
+            end = clock();
+            break;
+        case 11:
+            start = clock();
+            mergeSort(vetor, 0, n-1);
+            end = clock();
+            break;
+        case 12:
+            start = clock();
+            radixSort(vetor, n);
+            end = clock();
+            break;
+        case 13:
+            start = clock();
+            end = clock();
+            break;
+    }
+    printf("\n\n  %5.2f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
+}
+
 //Abre o arquivo e escreve a saida do vetor nele
-void escreveSaida(int *vetor, int n, int opc){
+void escreveSaida(int *vetor, int n){
     FILE* arquivo;
     arquivo = fopen("saida.txt", "w");
 
@@ -408,8 +585,7 @@ void escreveSaida(int *vetor, int n, int opc){
 }
 
 int main(){
-    time_t start, end;
-    int opc, n;
+    int n;
 
     //Escolher o tamanho do vetor
     printf("Escolha o tamanho do vetor: ");
@@ -419,39 +595,15 @@ int main(){
     //Escolher a forma que o vetor vai ser preenchido
     geraNum(vetor, n);
 
-    //Escolhe quantos algoritmos de ordenacao vao ser utilizados
-    do{
-        printf("\n0 - Todos os algoritmos\n1 - Um algoritmo\n2 - Um numero de algoritmos\nEscolha como deseja rodar os algoritmos de ordenacao: ");
-        scanf("%d", &opc);
-        if(opc != 0 && opc != 1 && opc != 2)
-            printf("\nDigite uma opcao valida!\n");
-    }while(opc != 0 && opc != 1 && opc != 2);
-
-    switch(opc){
-        case 0:
-            todosAlgoritmos(vetor, n);
-        break;
-        case 1:
-            umAlgoritmo(vetor, n);
-        break;
-        case 2:
-            numAlgoritmo(vetor, n);
-        break;
-    }
-
-    //Inicio da contagem de tempo
-    start = clock();
-
-    //Fim da contagem de tempo
-    end = clock();
+    //Escolhe qual algoritmo de ordenacao vai ser utilizado
+    umAlgoritmo(vetor, n);
 
     printf("\n");
-    imprimir(vetor, n);
+    //imprimir(vetor, n);
 
-    escreveSaida(vetor, n, opc);
+    escreveSaida(vetor, n);
 
-    printf("\n\n  %5.2f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
-    printf("a");
+    printf("Numero de comparacoes : %d \nNumero de trocas: %d\n", comparacoes, trocas);
 
     //Libera o vetor
     free(vetor);

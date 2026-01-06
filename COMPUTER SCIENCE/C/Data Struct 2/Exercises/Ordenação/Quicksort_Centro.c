@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX 50000
+#define MAX 1000
 
 int v[MAX];
 int comparacoes = 0, trocas = 0;

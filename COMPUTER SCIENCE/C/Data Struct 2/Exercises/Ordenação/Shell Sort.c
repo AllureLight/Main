@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TAM 50000
+#define TAM 500000
 
 void imprimir(int Vet[TAM]){
     for(int i = 0; i < TAM; i++){

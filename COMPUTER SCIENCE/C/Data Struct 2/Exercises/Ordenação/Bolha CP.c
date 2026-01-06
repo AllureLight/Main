@@ -4,7 +4,7 @@
 
 //Bolha com Criterio de Parada
 
-#define TAM 5000
+#define TAM 100000
 
 void imprimir(int Vet[TAM]){
     for(int i = 0; i < TAM; i++){
