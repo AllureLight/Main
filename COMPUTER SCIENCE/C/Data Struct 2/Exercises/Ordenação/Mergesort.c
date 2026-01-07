@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TAM 50000
+#define TAM 500000
 
 int comparacoes = 0, trocas = 0;
 

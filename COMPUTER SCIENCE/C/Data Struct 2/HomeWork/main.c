@@ -5,20 +5,12 @@
 #define tam_bucket 1000
 #define num_bucket 100
 
-int comparacoes = 0, trocas = 0;
+long long comparacoes = 0, trocas = 0;
 
 typedef struct bucket{
     int *balde;
     int top;
 }Bucket;
-
-//TESTE, TIRAR DPS
-void imprimir(int *vetor, int n){
-    for(int i = 0; i < n; i++){
-        printf("%d ", vetor[i]);
-    }
-    printf("\n");
-}
 
 //Gera o vetor com n valores
 int *geraVet(int n){
@@ -49,7 +41,7 @@ void geraNum(int *vetor, int n){
         case 0:
             srand(time(NULL));
             for(int i = 0; i < n; i++)
-                vetor[i] = rand() % 100;
+                vetor[i] = rand();
             break;
         //gera em ordem crescente
         case 1:
@@ -73,11 +65,11 @@ void bolha(int *vetor, int n) {
     
     for(int i = (n - 1); i >= 1; i--){
         for(int j = 0; j < i; j++){
+            comparacoes++;
             if(vetor[j] > vetor[j+1]){
+                trocas++;
                 aux = vetor[j];
-                
                 vetor[j] = vetor[j+1];
-                
                 vetor[j+1] = aux;   
             }
         }
@@ -94,7 +86,9 @@ void bolhaCP(int *vetor, int n) {
         j = 1;
         x = 0;
         while(j < n){
+            comparacoes++;
             if(vetor[j-1] > vetor[j]){
+                trocas++;
                 aux = vetor[j-1];
                 vetor[j-1] = vetor[j];
                 vetor[j] = aux;
@@ -114,12 +108,20 @@ void insercaoDireta(int *vetor, int n) {
     for(int i = 1; i < n; i++){
         aux = vetor[i];
         j = i - 1;
-        while((j >= 0) && (aux < vetor[j])){
-            vetor[j+1] = vetor[j];
-            j = j-1;
+        while((j >= 0)){
+            comparacoes++;
+            if(aux < vetor[j]){
+                vetor[j+1] = vetor[j];
+                trocas++;
+                j = j-1;
+            }
+            else
+                break;
         }
-        if(j != (i-1))
+        if(j != (i-1)){
+            trocas++;
             vetor[j+1] = aux;
+        }
     }
 }
 
@@ -134,6 +136,7 @@ void insercaoBinaria(int *vetor, int n){
         dir = i;
         while(esq < dir){
             meio = (esq + dir) / 2;
+            comparacoes++;
             if(vetor[meio] <= aux)
                 esq = meio + 1;
             else
@@ -141,8 +144,10 @@ void insercaoBinaria(int *vetor, int n){
         }
         for(int j = i; j > esq; j--){
             vetor[j] = vetor[j-1];
+            trocas++;
         }
         vetor[dir] = aux;
+        trocas++;
     }
 }
 
@@ -159,20 +164,25 @@ void insercaoTernaria(int *vetor, int n){
             int terc = (dir - esq) / 3;
             m1 = esq + terc;
             m2 = dir - terc;
-
-            if(vetor[m1] > aux)
+            comparacoes++;
+            if(vetor[m1] > aux){
                 dir = m1;
-            else if(vetor[m2] < aux)
-                esq = m2 + 1;
-            else{
-                esq = m1 + 1;
-                dir = m2;
+            }else {
+                comparacoes++;
+                if(vetor[m2] < aux)
+                    esq = m2 + 1;
+                else{
+                    esq = m1 + 1;
+                    dir = m2;
+                }
             }
         }
         for(int j = i; j > esq; j--){
             vetor[j] = vetor[j-1];
+            trocas++;
         }
         vetor[dir] = aux;
+        trocas++;
     }
 }
 
@@ -189,10 +199,17 @@ void shellsort(int *vetor, int n){
         for(int i = h; i < n; i++){
             aux = vetor[i];
             j = i - h;
-            while(j >= 0 && aux < vetor[j]){
-                vetor[j+h] = vetor[j];
-                j = j - h;
+            while(j >= 0){
+                comparacoes++;
+                if(aux < vetor[j]){
+                    trocas++;
+                    vetor[j+h] = vetor[j];
+                    j = j - h;
+                }
+                else
+                    break;
             }
+            trocas++;
             vetor[j+h] = aux;
         }
         h /= 3;
@@ -206,10 +223,12 @@ void selecaoDireta(int *vetor, int n){
     for(int i = 0; i < n - 1;i++){
         menor = i;
         for(int j = i + 1; j < n; j++){
+            comparacoes++;
             if(vetor[j] < vetor[menor])
                 menor = j;
         }
         if(i != menor){
+            trocas++;
             aux = vetor[i];
             vetor[i] = vetor[menor];
             vetor[menor] = aux;
@@ -225,13 +244,15 @@ void criaHeap(int *vetor, int inicio, int final){
     while(j <= final){
 
         if(j < final){
+            comparacoes++;
             if(vetor[j] < vetor[j+1]){
                 j = j + 1;
             }
         }
-
+        comparacoes++;
         if(aux < vetor[j]){
             vetor[inicio] = vetor[j];
+            trocas++;
             inicio = j;
             j = 2 * inicio + 1;
         }
@@ -239,6 +260,7 @@ void criaHeap(int *vetor, int inicio, int final){
             j = final + 1;
     }
     vetor[inicio] = aux;
+        trocas++;
 }
 void heapSort(int *vetor, int n){
     int aux;
@@ -248,6 +270,7 @@ void heapSort(int *vetor, int n){
     }
 
     for(int i = n - 1; i > 0; i--){
+        trocas++;
         aux = vetor[0];
         vetor[0] = vetor[i];
         vetor[i] = aux;
@@ -355,28 +378,41 @@ void quickSortMediana(int *vetor, int esq, int dir){
     }
 }
 
-//Mergesort OLHAR DPS ******
+//Mergesort
 void intercalar(int *vetor, int ini, int fim, int meio){
     int i = ini;
     int j = meio + 1;
     int k = 0;
 
-    int aux[fim];
+    int aux[fim - ini + 1];
 
-    while(i <= meio || j <= fim){
-        if(i == meio + 1 || (vetor[j] < vetor[i] && j != fim+1)){
-            aux[k] = vetor[j];
-            j++;
-            k++;
+    while(i <= meio && j <= fim){
+        comparacoes++;
+        if (vetor[i] <= vetor[j]) {
+            aux[k++] = vetor[i++];
+        } else {
+            aux[k++] = vetor[j++];
         }
-        else{
-            aux[k] = vetor[i];
-            i++;
-            k++;
-        }
+        trocas++; 
+    }
+
+    while (i <= meio) {
+        aux[k++] = vetor[i++];
+        trocas++;
+    }
+
+    while (j <= fim) {
+        aux[k++] = vetor[j++];
+        trocas++;
+    }
+
+    while(j <= fim){
+        aux[k++] = vetor[j++];
+        trocas++;
     }
     
     for(i = ini, k = 0; i <= fim; i++, k++){
+        trocas++;
         vetor[i] = aux[k];
     }
 }
@@ -405,17 +441,22 @@ void countSort(int *vetor, int n, int exp){
     for(i = n - 1; i >= 0; i--){
         output[count[(vetor[i] / exp) % 10] - 1] = vetor[i];
         count[(vetor[i] / exp) % 10]--;
+        trocas++;
     }
 
     for(i = 0; i < n; i++){
         vetor[i] = output[i];
+        trocas++;
     }
     free(output);
 }
 void radixSort(int *vetor, int n){
     int max = vetor[0];
     for(int i = 1; i < n; i++){
-        if(vetor[i] > max) max = vetor[i];
+        comparacoes++;
+        if(vetor[i] > max){
+            max = vetor[i];
+        }
     }
 
     for(int i = 1; max / i > 0 ; i *= 10) {
@@ -423,7 +464,7 @@ void radixSort(int *vetor, int n){
     }
 }
 
-//Bucketsort void bucketsort(int *vetor, int n)
+//Bucketsort
 void insertion(int v[], int tam){
     int i, j, chave;
 
@@ -453,7 +494,9 @@ void bucketSort(int v[], int tam){
     int min = v[0], max = v[0];
 
     for(i = 1; i < tam; i++){
+        comparacoes++;
         if(v[i] < min) min = v[i];
+        comparacoes++;
         if(v[i] > max) max = v[i]; 
     }
 
@@ -479,6 +522,7 @@ void bucketSort(int v[], int tam){
     for(i = 0; i < num_bucket; i++){
         for(j = 0; j < bucket[i].top; j++){
             v[k++] = bucket[i].balde[j];
+            trocas++;
         }
         free(bucket[i].balde);
     }
@@ -564,10 +608,11 @@ void umAlgoritmo(int *vetor, int n){
             break;
         case 13:
             start = clock();
+            bucketSort(vetor, n);
             end = clock();
             break;
     }
-    printf("\n\n  %5.2f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
+    printf("\n\n  %5.8f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
 }
 
 //Abre o arquivo e escreve a saida do vetor nele
@@ -584,6 +629,7 @@ void escreveSaida(int *vetor, int n){
     fclose(arquivo);
 }
 
+//Funcao principal
 int main(){
     int n;
 
@@ -598,12 +644,11 @@ int main(){
     //Escolhe qual algoritmo de ordenacao vai ser utilizado
     umAlgoritmo(vetor, n);
 
-    printf("\n");
-    //imprimir(vetor, n);
-
+    //Escreve a saida do vetor no arquivo txt
     escreveSaida(vetor, n);
 
-    printf("Numero de comparacoes : %d \nNumero de trocas: %d\n", comparacoes, trocas);
+    //Printa o numero de comparacoes e trocas
+    printf("Numero de comparacoes : %lld \nNumero de trocas: %lld\n", comparacoes, trocas);
 
     //Libera o vetor
     free(vetor);
