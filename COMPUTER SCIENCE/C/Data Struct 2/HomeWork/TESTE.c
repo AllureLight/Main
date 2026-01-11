@@ -29,21 +29,10 @@ int *geraVet(int n){
 }
 
 //gera n numeros em ordem aleatoria, crescente e decrescente
-void geraNum(int *vetor, int n){
-    int opc;
-    
-    do{
-        printf("\n0 - aleatoria\t1 - crescente\t 2 - descrecente\nEscolha um metodo de geracao de valores: ");
-        scanf("%d", &opc);
-        if(opc != 0 && opc != 1 && opc != 2)
-            printf("\nDigite uma opcao valida!\n");
-    }while(opc != 0 && opc != 1 && opc != 2);
-
-    printf("\n");
+void geraNum(int *vetor, int n, int opc){
     switch(opc){
         //gera em ordem aleatoria
         case 0:
-            srand(time(NULL));
             for(int i = 0; i < n; i++)
                 vetor[i] = rand();
             break;
@@ -58,8 +47,6 @@ void geraNum(int *vetor, int n){
                 vetor[n-i] = i-1;
             break;
     }
-    for(int i = 0; i < n; i++)
-        printf("%d\n", vetor[i]);
 }
 
 //ALGORITMOS DE ORDENACAO :
@@ -533,19 +520,10 @@ void bucketSort(int v[], int tam){
 }
 
 //roda o algoritmo escolhido
-void umAlgoritmo(int *vetor, int n){
+void umAlgoritmo(int *vetor, int n, int opc){
     clock_t start, end;
-    int opc;
-    printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort");
-    do{
-        printf("\nEscolha qual algoritmo de ordenacao vai ser utilizado: ");
-        scanf("%d", &opc);
-        if(opc < 0 || opc > 13)
-            printf("\nDigite uma opcao valida!\n");
-    }while(opc < 0 || opc > 13);
 
     start = clock();
-
     switch(opc){
         case 0: bolha(vetor, n); break;
         case 1: bolhaCP(vetor, n); break;
@@ -565,44 +543,43 @@ void umAlgoritmo(int *vetor, int n){
     end = clock();
     //printf do tempo de execucao da ordenacao escolhida
     printf("\n\n  %6.8f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
+    printf("Numero de comparacoes : %lld \nNumero de trocas: %lld\n", comparacoes, trocas);
+    comparacoes = trocas = 0;
 }
 
-//Abre o arquivo e escreve a saida do vetor nele
-void escreveSaida(int *vetor, int n){
-    FILE* arquivo;
-    arquivo = fopen("saida.txt", "w");
-
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-    }
-
-    for(int i = 0; i < n; i++)
-        fprintf(arquivo, "%d\n", vetor[i]);
-    fclose(arquivo);
-}
 
 //Funcao principal
 int main(){
-    int n;
+    int n, opc1 = 0, opc;
+    int *vetor;
 
-    //Escolher o tamanho do vetor
-    printf("Escolha o tamanho do vetor: ");
-    scanf("%d", &n);
-    int *vetor = geraVet(n);
+    printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort");
+    do{
+        printf("\nEscolha qual algoritmo de ordenacao vai ser utilizado: ");
+        scanf("%d", &opc);
+        if(opc < 0 || opc > 13)
+            printf("\nDigite uma opcao valida!\n");
+    }while(opc < 0 || opc > 13);
 
-    //Escolher a forma que o vetor vai ser preenchido
-    geraNum(vetor, n);
+    srand(1234);
 
-    //Escolhe qual algoritmo de ordenacao vai ser utilizado
-    umAlgoritmo(vetor, n);
-
-    //Escreve a saida do vetor no arquivo txt
-    escreveSaida(vetor, n);
-
-    //Printa o numero de comparacoes e trocas
-    printf("Numero de comparacoes : %lld \nNumero de trocas: %lld\n", comparacoes, trocas);
-
-    //Libera o vetor
+    n = 10000;
+    vetor = geraVet(n);
+    geraNum(vetor, n, opc1);
+    umAlgoritmo(vetor, n, opc);
     free(vetor);
+
+    n = 100000;
+    vetor = geraVet(n);
+    geraNum(vetor, n, opc1);
+    umAlgoritmo(vetor, n, opc);
+    free(vetor);
+
+    n = 500000;
+    vetor = geraVet(n);
+    geraNum(vetor, n, opc1);
+    umAlgoritmo(vetor, n, opc);
+    free(vetor);
+
     return 0;
 }
