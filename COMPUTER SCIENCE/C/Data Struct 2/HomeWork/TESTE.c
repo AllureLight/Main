@@ -542,27 +542,37 @@ void umAlgoritmo(int *vetor, int n, int opc){
     }
     end = clock();
     //printf do tempo de execucao da ordenacao escolhida
-    printf("\n\n  %6.8f seg.\n\n", ((double) (end - start)) / CLOCKS_PER_SEC);
-    printf("Numero de comparacoes : %lld \nNumero de trocas: %lld\n", comparacoes, trocas);
+    printf("\n  %6.10f seg.\n", ((double) (end - start)) / CLOCKS_PER_SEC);
+    printf("Numero de comparacoes : %lld / Numero de trocas: %lld\n", comparacoes, trocas);
     comparacoes = trocas = 0;
 }
 
 
 //Funcao principal
 int main(){
-    int n, opc1 = 0, opc;
+    int n, opc1 = 0, opc = 0;
     int *vetor;
-
-    printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort");
-    do{
-        printf("\nEscolha qual algoritmo de ordenacao vai ser utilizado: ");
-        scanf("%d", &opc);
-        if(opc < 0 || opc > 13)
-            printf("\nDigite uma opcao valida!\n");
-    }while(opc < 0 || opc > 13);
 
     srand(1234);
 
+    while(opc < 14){
+    if(opc == 0) printf("Bolha");
+    else if (opc == 1) printf("\nBolha com Criterio de Parada");
+    else if (opc == 2) printf("\nInsercao Direta");
+    else if (opc == 3) printf("\nInsercao Binaria");
+    else if (opc == 4) printf("\nInsercao Ternaria");
+    else if (opc == 5) printf("\nShellsort");
+    else if (opc == 6) printf("\nSelecao Direta");
+    else if (opc == 7) printf("\nHeapsort");
+    else if (opc == 8) printf("\nQuicksort Centro");
+    else if (opc == 9) printf("\nQuicksort Fim");
+    else if (opc == 10) printf("\nQuicksort Mediana");
+    else if (opc == 11) printf("\nMergesort");
+    else if (opc == 12) printf("\nRadixsort");
+    else if (opc == 13) printf("\nBucketsort");
+    
+    //printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort\n\n");
+    //scanf("%d", &opc);
     n = 10000;
     vetor = geraVet(n);
     geraNum(vetor, n, opc1);
@@ -581,5 +591,7 @@ int main(){
     umAlgoritmo(vetor, n, opc);
     free(vetor);
 
+    opc++;
+    }
     return 0;
 }
