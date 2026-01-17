@@ -133,12 +133,14 @@ void insercaoBinaria(int *vetor, int n){
             else
                 dir = meio;
         }
-        for(int j = i; j > esq; j--){
-            vetor[j] = vetor[j-1];
+        if (esq != i) {
+            for(int j = i; j > esq; j--){
+                vetor[j] = vetor[j-1];
+                trocas++;
+            }
+            vetor[esq] = aux;
             trocas++;
         }
-        vetor[dir] = aux;
-        trocas++;
     }
 }
 
@@ -168,12 +170,14 @@ void insercaoTernaria(int *vetor, int n){
                 }
             }
         }
-        for(int j = i; j > esq; j--){
-            vetor[j] = vetor[j-1];
-            trocas++;
-        }
-        vetor[dir] = aux;
+        if (esq != i) {
+            for(int j = i; j > esq; j--){
+                vetor[j] = vetor[j-1];
+                trocas++;
+            }
+        vetor[esq] = aux;
         trocas++;
+        }
     }
 }
 
@@ -190,18 +194,22 @@ void shellsort(int *vetor, int n){
         for(int i = h; i < n; i++){
             aux = vetor[i];
             j = i - h;
+            int move = 0;
             while(j >= 0){
                 comparacoes++;
                 if(aux < vetor[j]){
                     trocas++;
                     vetor[j+h] = vetor[j];
                     j = j - h;
+                    move = 1;
                 }
                 else
                     break;
             }
-            trocas++;
-            vetor[j+h] = aux;
+            if (move) {
+                vetor[j+h] = aux;
+                trocas++;
+            }
         }
         h /= 3;
     }
@@ -231,6 +239,7 @@ void selecaoDireta(int *vetor, int n){
 void criaHeap(int *vetor, int inicio, int final){
     int aux = vetor[inicio];
     int j = inicio * 2 + 1;
+    int move = 0;
     
     while(j <= final){
 
@@ -246,12 +255,15 @@ void criaHeap(int *vetor, int inicio, int final){
             trocas++;
             inicio = j;
             j = 2 * inicio + 1;
+            move = 1;
         }
         else
             j = final + 1;
     }
-    vetor[inicio] = aux;
+    if (move) {
+        vetor[inicio] = aux;
         trocas++;
+    }
 }
 void heapSort(int *vetor, int n){
     int aux;
@@ -273,23 +285,31 @@ void heapSort(int *vetor, int n){
 //Quicksort Centro
 int particaoCentro(int *vetor, int esq, int dir){
     int i = esq, j = dir;
-    int aux, pivo = vetor[(i+j) / 2];
+    int aux, pivo = vetor[(esq + dir) / 2];
 
     while(i <= j){
-        while(vetor[i] < pivo && i < dir){
-            i++;
+
+        while(i < dir){
             comparacoes++;
+            if(vetor[i] < pivo)
+                i++;
+            else
+                break;
         }
-        while(vetor[j] > pivo && j > esq){
-            j--;
+        while(j > esq){
             comparacoes++;
+            if(vetor[j] > pivo)
+                j--;
+            else
+                break;
         }
-        if(i <= j){
+        if(i < j){
             aux = vetor[i];
             vetor[i] = vetor[j];
             vetor[j] = aux;
             trocas++;
-
+        }
+        if(i <= j){
             i++;
             j--;
         }
@@ -313,48 +333,95 @@ int particaoFim(int *vetor, int esq, int dir){
         comparacoes++;
         if(vetor[j] <= pivo){
             i++;
-            aux = vetor[i];
-            vetor[i] = vetor[j];
-            vetor[j] = aux;
-            trocas++;
+            if(i != j){
+                aux = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = aux;
+                trocas++;
+            }
         }
     }
 
-    aux = vetor[i + 1];
-    vetor[i+1] = vetor[dir];
-    vetor[dir] = aux;
-    trocas++;
+    if(i + 1 != dir){
+        aux = vetor[i + 1];
+        vetor[i + 1] = vetor[dir];
+        vetor[dir] = aux;
+        trocas++;
+    }
 
     return i + 1;
 }
 void quickSortFim(int *vetor, int esq, int dir){
-    if(esq < dir){
+    while(esq < dir){
         int i = particaoFim(vetor, esq, dir);
-        quickSortFim(vetor, esq, i - 1);
-        quickSortFim(vetor, i + 1, dir);
+
+        if(i - esq < dir - i){
+            quickSortFim(vetor, esq, i - 1);
+            esq = i + 1;
+        } else {
+            quickSortFim(vetor, i + 1, dir);
+            dir = i - 1;
+        }
     }
 }
 
 ////Quicksort Mediana
+int medianaDeTres(int *vetor, int esq, int dir){
+    int meio = (esq + dir) / 2;
+
+    comparacoes++;
+    if(vetor[esq] > vetor[meio]){
+        int aux = vetor[esq];
+        vetor[esq] = vetor[meio];
+        vetor[meio] = aux;
+        trocas++;
+    }
+
+    comparacoes++;
+    if(vetor[esq] > vetor[dir]){
+        int aux = vetor[esq];
+        vetor[esq] = vetor[dir];
+        vetor[dir] = aux;
+        trocas++;
+    }
+
+    comparacoes++;
+    if(vetor[meio] > vetor[dir]){
+        int aux = vetor[meio];
+        vetor[meio] = vetor[dir];
+        vetor[dir] = aux;
+        trocas++;
+    }
+
+    return vetor[meio];
+}
 int particaoMediana(int *vetor, int esq, int dir){
     int i = esq, j = dir;
-    int aux, pivo = vetor[(i + j + ((i + j) / 2))/ 3];
+    int aux, pivo = medianaDeTres(vetor, esq, dir);
 
     while(i <= j){
-        while(vetor[i] < pivo && i < dir){
-            i++;
+
+        while(i < dir){
             comparacoes++;
+            if(vetor[i] < pivo)
+                i++;
+            else
+                break;
         }
-        while(vetor[j] > pivo && j > esq){
-            j--;
+        while(j > esq){
             comparacoes++;
+            if(vetor[j] > pivo)
+                j--;
+            else
+                break;
         }
         if(i <= j){
-            aux = vetor[i];
-            vetor[i] = vetor[j];
-            vetor[j] = aux;
-            trocas++;
-
+            if(i < j){
+                aux = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = aux;
+                trocas++;
+            }
             i++;
             j--;
         }
@@ -392,19 +459,14 @@ void intercalar(int *vetor, int ini, int fim, int meio){
         trocas++;
     }
 
-    while (j <= fim) {
-        aux[k++] = vetor[j++];
-        trocas++;
-    }
-
     while(j <= fim){
         aux[k++] = vetor[j++];
         trocas++;
     }
     
     for(i = ini, k = 0; i <= fim; i++, k++){
-        trocas++;
         vetor[i] = aux[k];
+        trocas++;
     }
 }
 void mergeSort(int *vetor, int ini, int fim){
@@ -557,19 +619,19 @@ int main(){
 
     while(opc < 14){
     if(opc == 0) printf("Bolha");
-    else if (opc == 1) printf("\nBolha com Criterio de Parada");
-    else if (opc == 2) printf("\nInsercao Direta");
-    else if (opc == 3) printf("\nInsercao Binaria");
-    else if (opc == 4) printf("\nInsercao Ternaria");
-    else if (opc == 5) printf("\nShellsort");
-    else if (opc == 6) printf("\nSelecao Direta");
-    else if (opc == 7) printf("\nHeapsort");
-    else if (opc == 8) printf("\nQuicksort Centro");
-    else if (opc == 9) printf("\nQuicksort Fim");
-    else if (opc == 10) printf("\nQuicksort Mediana");
-    else if (opc == 11) printf("\nMergesort");
-    else if (opc == 12) printf("\nRadixsort");
-    else if (opc == 13) printf("\nBucketsort");
+    else if (opc == 1) printf("\n\nBolha com Criterio de Parada");
+    else if (opc == 2) printf("\n\nInsercao Direta");
+    else if (opc == 3) printf("\n\nInsercao Binaria");
+    else if (opc == 4) printf("\n\nInsercao Ternaria");
+    else if (opc == 5) printf("\n\nShellsort");
+    else if (opc == 6) printf("\n\nSelecao Direta");
+    else if (opc == 7) printf("\n\nHeapsort");
+    else if (opc == 8) printf("\n\nQuicksort Centro");
+    else if (opc == 9) printf("\n\nQuicksort Fim");
+    else if (opc == 10) printf("\n\nQuicksort Mediana");
+    else if (opc == 11) printf("\n\nMergesort");
+    else if (opc == 12) printf("\n\nRadixsort");
+    else if (opc == 13) printf("\n\nBucketsort");
     
     //printf("\n0 - Bolha\n1 - Bolha com Criterio de Parada\n2 - Insercao Direta\n3 - Insercao Binaria\n4 - Insercao Ternaria\n5 - Shellsort\n6 - Selecao Direta\n7 - Heapsort\n8 - Quicksort Centro\n9 - Quicksort Fim\n10 - Quicksort Mediana\n11 - Mergesort\n12 - Radixsort\n13 - Bucketsort\n\n");
     //scanf("%d", &opc);
