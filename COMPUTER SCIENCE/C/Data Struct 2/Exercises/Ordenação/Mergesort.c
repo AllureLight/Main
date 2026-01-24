@@ -13,40 +13,44 @@ void imprimir(int Vet[TAM]){
     printf("\n");
 }
 
-void intercalar(int v[], int ini, int fim, int meio){
+void intercalar(int *vetor, int ini, int fim, int meio){
     int i = ini;
     int j = meio + 1;
     int k = 0;
 
-    int aux[TAM];
+    int aux[fim - ini + 1];
 
-    while(i <= meio || j <= fim){
+    while(i <= meio && j <= fim){
         comparacoes++;
-        if(i == meio + 1 || (v[j] < v[i] && j != fim+1)){
-            aux[k] = v[j];
-            j++;
-            k++;
-            trocas++;
+        if (vetor[i] <= vetor[j]) {
+            aux[k++] = vetor[i++];
+        } else {
+            aux[k++] = vetor[j++];
         }
-        else{
-            aux[k] = v[i];
-            i++;
-            k++;
-            trocas++;
-        }
+        trocas++; 
+    }
+
+    while (i <= meio) {
+        aux[k++] = vetor[i++];
+        trocas++;
+    }
+
+    while(j <= fim){
+        aux[k++] = vetor[j++];
+        trocas++;
     }
     
     for(i = ini, k = 0; i <= fim; i++, k++){
-        v[i] = aux[k];
+        vetor[i] = aux[k];
+        trocas++;
     }
 }
-
-void mergeSort(int v[], int ini, int fim){
+void mergeSort(int *vetor, int ini, int fim){
     if(ini < fim){
         int meio = (ini + fim) / 2;
-        mergeSort(v, ini, meio);
-        mergeSort(v, meio + 1, fim);
-        intercalar(v, ini, fim, meio);
+        mergeSort(vetor, ini, meio);
+        mergeSort(vetor, meio + 1, fim);
+        intercalar(vetor, ini, fim, meio);
     }
 }
 
@@ -54,12 +58,12 @@ int main(){
     time_t start, end;
     start = clock();
 
-    int v[TAM];
+    int v[TAM] = {4, 2, 9, 3, 5 ,7};
 
-    srand( (unsigned)time(NULL) );
+    /*srand( (unsigned)time(NULL) );
     for(int a = 0; a < TAM ; a++){
         v[a] = rand()%100;
-    }
+    }*/
 
     printf("Valores fora da ordem:\n");
     imprimir(v);
