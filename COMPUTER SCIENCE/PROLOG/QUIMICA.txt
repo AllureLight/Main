@@ -1,0 +1,67 @@
+%
+simples(M, A1, A2) :- ligacaosimples(M, A1, A2).
+simples(M, A1, A2) :- ligacaosimples(M, A2, A1).
+
+dupla(M, A1, A2) :- ligacaodupla(M, A1, A2).
+dupla(M, A1, A2) :- ligacaodupla(M, A2, A1).
+
+%IDENTIFICADOR DAS FUNÇÕES
+carboxila(M) :- atomo(M, CA, carbono), atomo(M, OA, oxigenio), 
+    simples(M, CA, OA), atomo(M, HA, hidrogenio),
+    simples(M, OA, HA), atomo(M, OB, oxigenio),
+    dupla(M, CA, OB).
+
+aldeido(M) :- atomo(M, CA, carbono), atomo(M, CA, CB),
+    simples(M, CA, CB), atomo(M, HA, hidrogenio),
+    simples(M, CB, HA), atomo(M, OB, oxigenio),
+    dupla(M, CA, OB).
+
+cetona(M) :- atomo(M, CA, carbono), atomo(M, CB, carbono),
+    simples(M, CA, CB), atomo(M, CC, carbono),
+    simples(M, CB, CC), atomo(M, OA, oxigenio),
+    dupla(M, CB, OA).
+
+aminaprimaria(M) :- atomo(M, CA, carbono), atomo(M, NA, nitrogenio),
+    simples(M, CA, NA), atomo(M, HA, hidrogenio), 
+    simples(M, NA, HA) , atomo(M, HB, hidrogenio),
+    simples(M, NA, HB).
+
+aminasecundaria(M) :- atomo(M, CA, carbono), atomo(M, NA, nitrogenio),
+    simples(M, CA, NA), atomo(M, HA, hidrogenio), 
+    simples(M, NA, HA), atomo(M, CB, carbono),
+    simples(M, NA, CB).
+
+aminaterciaria(M) :- atomo(M, CA, carbono), atomo(M, NA, nitrogenio),
+    simples(M, CA, NA), atomo(M, CB, carbono), 
+    simples(M, NA, CB), atomo(M, CC, carbono),
+    simples(M, NA, CC).
+    
+alcool(M) :- atomo(M, CA, carbono), atomo(M, OA, oxigenio),
+    simples(M, CA, OA), atomo(M, HA, hidrogenio),
+    simples(M, OA, HA).
+
+%Ver melhor Haletos dps
+haletofluor(M) :- atomo(M, CA, carbono), atomo(M, FA, fluor),
+    simples(M, CA, FA).
+
+haletocloro(M) :- atomo(M, CA, carbono), atomo(M, ClA, cloro),
+    simples(M, CA, Cla).
+
+haletobromo(M) :- atomo(M, CA, carbono), atomo(M, BA, bromo),
+    simples(M, CA, BA).
+
+haletoiodo(M) :- atomo(M, CA, carbono), atomo(M, IA, iodo),
+    simples(M, CA, IA).
+
+%IMPRESSÃO DA FUNÇÃO DA MOLÉCULA
+funcoes(M) :- carboxila(M), writeln("Ácidos carboxílico"), !.
+funcoes(M) :- aldeido(M), writeln("Aldeído"), !.
+funcoes(M) :- cetona(M), writeln("Cetona"), !.
+funcoes(M) :- aminaprimaria(M), writeln("Amina primária"), !.
+funcoes(M) :- aminasecundaria(M), writeln("Amina secundária"), !.
+funcoes(M) :- aminaterciaria(M), writeln("Amina terciária"), !.
+funcoes(M) :- alcool(M), writeln("Álcool"), !.
+funcoes(M) :- haletofluor(M), writeln("Haleto Fluor"), !.
+funcoes(M) :- haletocloro(M), writeln("Haleto Cloro"), !.
+funcoes(M) :- haletobromo(M), writeln("Haleto Bromo"), !.
+funcoes(M) :- haletoiodo(M), writeln("Haleto Iodo"), !.
