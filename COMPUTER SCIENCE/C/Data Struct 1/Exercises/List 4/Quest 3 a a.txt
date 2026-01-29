@@ -1,5 +1,0 @@
-Quais das funções solicitadas no exercício anterior teriam implementação idêntica em uma
-árvore binária de busca? Quais poderiam ser modificadas para melhorar a eficiência? Justi-
-fique e implemente essas funções (as que podem ser modificadas) para árvores binárias de busca.
-
-Answer = Quantidade de folhas, quantidade de caracteres, 

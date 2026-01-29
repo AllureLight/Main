@@ -1,0 +1,9 @@
+Suponha que tenhamos números entre 1 e 1000 em uma árvore binária de pesquisa e deseja-
+mos fazer uma pesquisa (busca) pelo número 363. Quais das seguintes sequências não pode-
+riam ser a sequência de nós examinados? Justifique.
+
+a) 2, 252, 401, 398, 330, 344, 397, 363. -> Certo
+b) 924, 220, 911, 244, 898, 258, 362, 363. -> Certo
+c) 925, 202, 911, 240, 912, 245, 363. -> Errado
+d) 2, 399, 387, 219, 266, 382, 381, 278, 363. -> Certo
+e) 935, 278, 347, 621, 299, 392, 358, 363. -> Errado
