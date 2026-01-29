@@ -45,7 +45,7 @@ haletofluor(M) :- atomo(M, CA, carbono), atomo(M, FA, fluor),
     simples(M, CA, FA).
 
 haletocloro(M) :- atomo(M, CA, carbono), atomo(M, ClA, cloro),
-    simples(M, CA, Cla).
+    simples(M, CA, ClA).
 
 haletobromo(M) :- atomo(M, CA, carbono), atomo(M, BA, bromo),
     simples(M, CA, BA).
