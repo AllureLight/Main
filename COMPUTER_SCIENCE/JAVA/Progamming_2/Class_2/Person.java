@@ -10,20 +10,21 @@ public class Person {
         this.nome = nome;
     }
 
+    //Os metodos censurados estavam com erros, mas ainda compilavam
     public static void main(String[] args){
         Person p1 = new Person("Guilherme");
         System.out.println(p1.nome);
-        System.out.println(p1.NumberOfPeople);
+        //System.out.println(p1.NumberOfPeople);
 
         Person p2 = new Person("Bruno");
 
-        System.out.println(p1.NumberOfPeople);
-        System.out.println(p2.NumberOfPeople);
+        //System.out.println(p1.NumberOfPeople);
+        //System.out.println(p2.NumberOfPeople);
         System.out.println(Person.NumberOfPeople);
         System.out.println(p2.nome);
 
         p2 = null;
         Person.NumberOfPeople--;
-        System.out.println(p2.NumberOfPeople);
+        //System.out.println(p2.NumberOfPeople);
     }
 }

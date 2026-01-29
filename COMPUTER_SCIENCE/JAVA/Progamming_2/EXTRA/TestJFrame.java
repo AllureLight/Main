@@ -3,6 +3,7 @@ package COMPUTER_SCIENCE.JAVA.Progamming_2.EXTRA;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import java.awt.FlowLayout;
 
 public class TestJFrame {
     //final indica o valor final do atributo
@@ -25,13 +26,16 @@ public class TestJFrame {
         //frame.add(); 
         //adiciona componentes na janela
 
+        //botao
         JButton btn_Add = new JButton("Add");
         frame.add(btn_Add);
 
+        //campo de texto
         JTextField text_camp = new JTextField("Text Field");
         frame.add(text_camp);
 
-        System.out.println(Math.PI);
-        System.out.println(COD);
+        //organizar os componentes
+        FlowLayout fl = new FlowLayout();
+        frame.setLayout(fl);
     }
 }
